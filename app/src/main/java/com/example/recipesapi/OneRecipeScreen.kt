@@ -178,6 +178,13 @@ fun OneRecipeScreen(navHostController: NavHostController, id: Int) {
 //                    navHostController.navigate("main")
                                 liked = !liked
                                 Log.d("TAGali", "OneRecipeScreen: $liked")
+                                if (liked && likedList.filter { it.recipeId == recipe.id }.isEmpty()) {
+                                    appDataBase.recipeDao().insertLiked(RecipeLiked(recipeId = recipe.id))
+                                }
+                                else if (!liked && likedList.filter { it.recipeId == recipe.id }.isNotEmpty() && isLiked != null) {
+                                    appDataBase.recipeDao().deleteLiked(isLiked)
+                                    Log.d("TAGbekali", "OneRecipeScreen: DELETE")
+                                }
                             },
                             modifier = Modifier
                                 .padding(
@@ -431,13 +438,13 @@ fun OneRecipeScreen(navHostController: NavHostController, id: Int) {
                 onClick = {
                     navHostController.navigate("main")
 
-                    if (liked && likedList.filter { it.recipeId == recipe.id }.isEmpty()) {
-                        appDataBase.recipeDao().insertLiked(RecipeLiked(recipeId = recipe.id))
-                    }
-                    else if (!liked && likedList.filter { it.recipeId == recipe.id }.isNotEmpty() && isLiked != null) {
-                        appDataBase.recipeDao().deleteLiked(isLiked)
-                        Log.d("TAGbekali", "OneRecipeScreen: DELETE")
-                    }
+//                    if (liked && likedList.filter { it.recipeId == recipe.id }.isEmpty()) {
+//                        appDataBase.recipeDao().insertLiked(RecipeLiked(recipeId = recipe.id))
+//                    }
+//                    else if (!liked && likedList.filter { it.recipeId == recipe.id }.isNotEmpty() && isLiked != null) {
+//                        appDataBase.recipeDao().deleteLiked(isLiked)
+//                        Log.d("TAGbekali", "OneRecipeScreen: DELETE")
+//                    }
                 },
                 modifier = Modifier
                     .padding(top = defaultTopPadding + 40.dp, start = defaultStartPadding + 10.dp)
